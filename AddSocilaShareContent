@@ -1,0 +1,24 @@
+// Create Social Share Buttons .
+if ( !class_exists( 'AddSocilaShareContent' ) ) {
+	class AddSocilaShareContent {
+		function __construct() {
+			add_filter(	'the_content', array( $this,'insert_socialshare_content') );
+		}
+		public function insert_socialshare_content( $content ) {
+			if ( is_singular( array( 'post', 'page' ) ) ) { // Display On post, page
+				socialshare_buttons();  // Display on Before
+				$socialshare_content = $this->get_after_content();
+		    	$content.= apply_filters('socialshare_content', $socialshare_content );
+			}
+		   	return $content;
+		} // Star Display On After
+		public function get_after_content() {
+			ob_start();
+			socialshare_buttons(); 
+			$socialshare = ob_get_contents();
+			ob_end_clean();
+			return $socialshare;
+		} // End Display On After
+	}
+	new AddSocilaShareContent(); 
+}
